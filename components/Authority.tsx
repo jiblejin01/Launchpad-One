@@ -1,7 +1,19 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Award, Globe, Cpu } from 'lucide-react';
 
+const S3_IMAGE_URL = "https://testingajibolasbucket.s3.eu-north-1.amazonaws.com/openart-put-him-in-portrait-executive-mode-like-an-industry-leader-make-him-wear-a_.jpeg";
+const FALLBACK_IMAGE_URL = "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800";
+
 const Authority: React.FC = () => {
+  const [imgSrc, setImgSrc] = useState(S3_IMAGE_URL);
+
+  const handleImageError = () => {
+    // If the S3 link fails (usually due to 403 Forbidden permissions), fall back to the Unsplash image
+    console.warn("Failed to load S3 image. Switching to fallback. Please check AWS S3 Bucket Permissions.");
+    setImgSrc(FALLBACK_IMAGE_URL);
+  };
+
   return (
     <section className="py-20 bg-white border-t border-zinc-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -10,8 +22,9 @@ const Authority: React.FC = () => {
           <div className="order-2 lg:order-1 relative">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-red-50 rounded-full -z-10"></div>
             <img 
-              src="https://media.licdn.com/dms/image/v2/D4D22AQHilJogLxVLSA/feedshare-shrink_2048_1536/B4DZqeTSrKJAAw-/0/1763592459723?e=1765411200&v=beta&t=egrIvlTHi-8CSE72G8jxRu8OLCOS2HmI0RwEoVCJqkA" 
-              alt="Ajibola Jinadu leading a session" 
+              src={imgSrc} 
+              onError={handleImageError}
+              alt="Ajibola Jinadu - Strategy session" 
               className="rounded-2xl shadow-xl object-cover w-full h-96 lg:h-auto"
             />
             <div className="absolute bottom-8 left-8 bg-white p-6 rounded-xl shadow-lg max-w-xs hidden sm:block border border-zinc-100">
